@@ -1,6 +1,7 @@
+
 "use client";
 
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,8 +26,12 @@ type SignUpFormData = z.infer<typeof formSchema>;
 
 export default function SignUp() {
 
+
   const [pending,setPending]= useState(false);
 
+   
+      const router = useRouter()
+    
   const {
     register,
     handleSubmit,
@@ -34,8 +39,7 @@ export default function SignUp() {
   } = useForm<SignUpFormData>({
     resolver: zodResolver(formSchema),
   });
-  const router = useRouter()
-
+  
   const onSubmit = (data: SignUpFormData) => {
     setPending(true)
     authClient.signUp.email({
@@ -54,6 +58,24 @@ export default function SignUp() {
     }
   );
   };
+   const onSocial = (social: "google" | "github" ) => {
+      setPending(true)
+      authClient.signIn.social({
+        provider:social,
+        callbackURL:"/"
+      },
+      {
+        onSuccess:()=>{
+          setPending(false)
+           
+        },
+        onError:(error)=>{
+           setPending(false)
+          toast.error(error.error.message)
+        }
+      }
+    )
+    };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
@@ -106,7 +128,11 @@ export default function SignUp() {
               )}
             </div>
 
-            <Button disabled={pending} type="submit" className={`w-full ${pending?"bg-gray-600":""} `}>
+            <Button
+              disabled={pending}
+              type="submit"
+              className={`w-full ${pending ? "bg-gray-600" : ""} `}
+            >
               Sign up
             </Button>
           </form>
@@ -118,10 +144,20 @@ export default function SignUp() {
           </div>
 
           <div className="flex space-x-4 mx-auto">
-            <Button disabled={pending} variant="outline" className="w-[50%]">
+            <Button
+              onClick={() => onSocial("google")}
+              disabled={pending}
+              variant="outline"
+              className="w-[50%]"
+            >
               <FaGoogle />
             </Button>
-            <Button disabled={pending} variant="outline" className="w-[50%]">
+            <Button
+              onClick={() => onSocial("github")}
+              disabled={pending}
+              variant="outline"
+              className="w-[50%]"
+            >
               <FaGithub />
             </Button>
           </div>
