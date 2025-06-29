@@ -1,15 +1,14 @@
 'use client'
 
-import { useTRPC } from "@/trpc/client"
-import { useQuery } from "@tanstack/react-query"
+import ErrorState from "@/components/ErrorState"
+
 
 const HomePage = () => {
 
-    const trpc= useTRPC()
-    const {data}= useQuery(trpc.hello.queryOptions({text:"Divyansh "}))
 
   return (
-    <div><p>{data?.greeting}</p></div>
+
+     <ErrorState title="Error Occured" description="error happen while fetching agents" />
   )
 }
 
