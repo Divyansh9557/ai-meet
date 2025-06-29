@@ -182,9 +182,9 @@ export default function SignUp() {
         </div>
 
         {/* Right - Branding */}
-        <div className="w-full hidden md:w-1/2 bg-green-700 text-white md:flex items-center justify-center p-8">
+        <div className="w-full hidden md:w-1/2 bg-radial from-sidebar-accent to-sidebar text-white md:flex items-center justify-center p-8">
           <div className="text-center">
-            <div className="text-5xl mb-4">🌀</div>
+            <div className="text-6xl mb-4">🌀</div>
             <h2 className="text-2xl font-bold">Meet.AI</h2>
           </div>
         </div>
@@ -192,3 +192,5 @@ export default function SignUp() {
     </div>
   );
 }
+
+
