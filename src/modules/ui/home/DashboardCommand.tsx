@@ -20,3 +20,4 @@ export const DashboardCommand = ({ open, setOpen }: Props) => {
     </CommandDialog>
   );
 };
+
