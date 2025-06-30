@@ -12,7 +12,7 @@ const layout = ({children}:Props) => {
   return( 
   <SidebarProvider>
       <AppSidebar />
-      <main className="flex flex-col h-screen w-screen bg-muted" >
+      <main className="flex flex-col bg-muted pb-20 min-h-screen w-screen " >
         <AppNavbar/>
         {children}
       </main>
