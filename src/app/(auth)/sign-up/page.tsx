@@ -1,5 +1,5 @@
 import { auth } from '@/auth'
-import SignUp from '@/modules/ui/auth/SignUp'
+import SignUp from '@/modules/auth/SignUp'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 

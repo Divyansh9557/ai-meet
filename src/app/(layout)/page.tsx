@@ -1,5 +1,5 @@
 import { auth } from "@/auth"
-import HomePage from "@/modules/ui/home/HomePage"
+import HomePage from "@/modules/Layout/HomePage"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 

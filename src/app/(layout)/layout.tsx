@@ -1,6 +1,6 @@
 import { SidebarProvider} from "@/components/ui/sidebar"
-import AppNavbar from "@/modules/ui/home/AppNavbar"
-import AppSidebar from "@/modules/ui/home/SideBar"
+import AppNavbar from "@/modules/Layout/AppNavbar"
+import AppSidebar from "@/modules/Layout/SideBar"
 
 
 

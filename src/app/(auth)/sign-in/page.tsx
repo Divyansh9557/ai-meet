@@ -1,5 +1,5 @@
 import { auth } from '@/auth'
-import Login from '@/modules/ui/auth/SignIn'
+import Login from '@/modules/auth/SignIn'
 import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import React from 'react'
