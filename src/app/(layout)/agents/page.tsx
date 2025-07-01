@@ -32,6 +32,7 @@ const page = async({searchParams}:PageProps) => {
 
   return<>
     <AgentPageTopBar/>
+   
     <HydrationBoundary state={dehydrate(queryClient)} >
       <Suspense fallback={ <LoaderState title="Agents is Loading" description="This may take some time" />} >
        <AgentPage/>

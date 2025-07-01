@@ -7,7 +7,7 @@ import {
   agentUpdateSchema,
 } from "../Schema";
 import { z } from "zod";
-import { and, count, desc, eq, ilike } from "drizzle-orm";
+import { and,  desc, eq, ilike } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 export const agentRouter = createTRPCRouter({
@@ -47,19 +47,10 @@ export const agentRouter = createTRPCRouter({
         )
         .orderBy(desc(agents.createdAt), desc(agents.id));
 
-      const [total] = await db
-        .select({ count: count() })
-        .from(agents)
-        .where(
-          and(
-            eq(agents.id, ctx.auth.user.id),
-            search ? ilike(agents.name, `%${search}%`) : undefined
-          )
-        );
 
       return {
         agents: data,
-        total: total.count,
+       
       };
     }),
 
