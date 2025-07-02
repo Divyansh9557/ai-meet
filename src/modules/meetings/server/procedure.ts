@@ -10,17 +10,42 @@ import {
   meetingsGetManySchema,
   meetingUpdateSchema,
 } from "../Schema";
+import { videoStream } from "@/lib/stream";
+import { generateAvatar } from "@/lib/generateAvatar";
 
 export const meeetingRouter = createTRPCRouter({
+
+  getToken:protectedProcedure
+  .mutation(async({ctx})=>{
+      await videoStream.upsertUsers([{
+          id:ctx.auth.user.id,
+          role:"admin",
+          name:ctx.auth.user.name,
+          image:ctx.auth.user.image ?? generateAvatar({seed:ctx.auth.user.name,varient:"initials"})
+      }])
+      const  expirationTime = Math.floor(Date.now()/1000) +3600 
+      const  issueAt = Math.floor(Date.now()/1000) -60 
+
+      const token = videoStream.generateUserToken({
+        user_id:ctx.auth.user.id,
+        validity_in_seconds:issueAt,
+        exp:expirationTime
+      })
+
+      return token
+  }),
+
   getOne: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input, ctx }) => {
+      
       const [existingMeeting] = await db
         .select()
         .from(meetings)
         .where(
           and(eq(meetings.id, input.id), eq(meetings.userId, ctx.auth.user.id))
         );
+
 
       if (!existingMeeting) {
         throw new TRPCError({
@@ -74,10 +99,47 @@ export const meeetingRouter = createTRPCRouter({
         .insert(meetings)
         .values({
           ...input,
-          agentId: input.agentId, // ensure agentId is defined
+          agentId: input.agentId, 
           userId: ctx.auth.user.id,
         })
         .returning();
+
+       // creating call
+
+       const call =  videoStream.video.call("default",createdMeeting.id)
+       call.create({
+        data:{
+          created_by_id:ctx.auth.user.id,
+          custom:{
+            meetingId:createdMeeting.id,
+            meetingName:createdMeeting.name
+          },
+          settings_override:{
+            transcription:{
+              language:"en",
+              mode:"auto-on",
+              closed_caption_mode:"auto-on"
+            },
+            recording:{
+              mode:"auto-on",
+              quality:"1080p",
+            }
+          }
+        }
+       })
+
+       const [existingAgent] = await db
+       .select()
+       .from(agents)
+       .where(eq(agents.id,createdMeeting.agentId));
+
+       await videoStream.upsertUsers([{
+        id:existingAgent.id,
+        name:existingAgent.name,
+        role:"user",
+        image: generateAvatar({seed:existingAgent.name,varient:"initials"})
+       }]) 
+
       return createdMeeting;
     }),
 

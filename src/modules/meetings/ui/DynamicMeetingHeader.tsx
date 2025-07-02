@@ -36,7 +36,7 @@ const DynamicMeetingHeader = ({
       {/* Breadcrumb */}
       <Breadcrumb className="flex items-center space-x-1">
         <BreadcrumbItem>
-          <Link key={meetings.id} href="/agents">
+          <Link key={meetings.id} href="/meetings">
             My Meetings
           </Link>
         </BreadcrumbItem>

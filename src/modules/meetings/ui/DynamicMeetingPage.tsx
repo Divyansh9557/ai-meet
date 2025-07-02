@@ -22,6 +22,7 @@ const DynamicMeetingPage = ({meetingId}:DynamicMeetingPageProps) => {
   const {data}= useSuspenseQuery(
     trpc.meetings.getOne.queryOptions({id:meetingId})
   )
+  
 
 
   const {mutate:onDelete,isPending}= useMutation(
